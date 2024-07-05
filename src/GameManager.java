@@ -1,5 +1,5 @@
-import Mappa.Mappa;
-import Pezzo.Pezzo;
+import mappa.Mappa;
+import pezzo.Pezzo;
 
 public class GameManager{
 
