@@ -3,9 +3,9 @@ import mappa.Mappa;
 
 public abstract class Pezzo {
 
-    int row;
-    int column;
-    short[][] forma; //array di array
+    public int row;
+    public int column;
+    public short[][] forma; //array di array
 
     Mappa mappa;
 
@@ -50,12 +50,59 @@ public abstract class Pezzo {
 
     }
 
-    public void muovi(){
+    public boolean muovi(int direzione){
         //valuta lo spostamento richiesto, se è consentito allora chiama rimuovi pezzo ,
         //piazza il pezzo nuovo dopo aver aggiroanto la posizione! vabbè hai capito!
+        rimuoviPezzo();
+
+        if(mappa.valutaCollisione(this,direzione)){
+            piazzaPezzo();
+            return false;
+        }
+
+
+        switch(direzione){
+            case 1: this.column--;
+                break;
+            case 2: this.column++;
+                break;
+        }
+
+
+        piazzaPezzo();
+        return true;
     }
 
-    public void ruota(){
+    public boolean scendi(){
+
+        rimuoviPezzo();
+        if(mappa.valutaCollisione(this,3)){
+            piazzaPezzo();
+            return false;
+        }
+        this.row++;
+        piazzaPezzo();
+        return true;
+
+    }
+
+    public boolean ruota(){
+
+        rimuoviPezzo();
+
+        short[][] nuovaForma = new short[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                nuovaForma[j][3 - i] = this.forma[i][j];
+            }
+        }
+        if(mappa.valutaCollisione(this,nuovaForma))
+            return false;
+
+        this.forma = nuovaForma;
+        piazzaPezzo();
+        return true;
+
 
     }
 
