@@ -17,9 +17,9 @@ public class Render {
         for (int i = 0; i < mappa.rows; i++) {
             for (int j = 0; j < mappa.cols; j++) {
                 if (mappa.caselle[i][j + mappa.borderOffset] == 0)
-                    renderer.shapes.DrawRectangle(j * 80, i * 80, 80, 80, Color.GRAY);
+                    renderer.shapes.DrawRectangle(j * 80, i * 80, 80, 80, Color.BLUE);
                 else
-                    renderer.shapes.DrawRectangle(j * 80, i * 80, 80, 80, Color.MAROON);
+                    renderer.shapes.DrawRectangle(j * 80, i * 80, 80, 80, Color.YELLOW);
             }
         }
     }

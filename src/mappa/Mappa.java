@@ -73,18 +73,43 @@ public class Mappa {
         return false;
     };
 
-    public boolean valutaRiga(){
-        return false;
-    };
+    public int valutaRiga(){
+        boolean piena;
+        int counter = 0;
 
-    public void scendiBlocchi(){
+        for(int i = this.rows - 1; i >= 0; i--){
+            piena = true;  // Reimposta la variabile piena per ogni riga
+            for(int j = this.borderOffset; j < this.cols + borderOffset; j++){
+                if (this.caselle[i][j] == 0) {
+                    piena = false;
+                    break;
+                }
+            }
+            if(piena){
+                counter++;
+                eliminaRiga(i);
+                scendiBlocchi(i);
+            }
+        }
 
+        System.out.println("Linee eliminate:");
+        System.out.println(counter);
+        return counter;
     }
 
+    public void eliminaRiga(int riga){
+        for(int j = this.borderOffset; j < this.cols + borderOffset; j++)
+            this.caselle[riga][j] = 0;
+    }
 
-
-
-
-
-
+    public void scendiBlocchi(int riga){
+        for(int i = riga; i > 0; i--){
+            for(int j = this.borderOffset; j < this.cols + borderOffset; j++){
+                this.caselle[i][j] = this.caselle[i-1][j];
+            }
+        }
+        for(int j = this.borderOffset; j < this.cols + borderOffset; j++){
+            this.caselle[0][j] = 0;
+        }
+    }
 }

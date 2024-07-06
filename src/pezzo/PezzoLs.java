@@ -5,6 +5,7 @@ public class PezzoLs extends Pezzo{
 
     public PezzoLs(Mappa mappa){
         super(mappa);
+        this.column = 4;
         setOffset();
         daiForma();
     }

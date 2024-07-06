@@ -1,4 +1,5 @@
 package pezzo;
+
 import mappa.Mappa;
 
 public abstract class Pezzo {
@@ -9,12 +10,12 @@ public abstract class Pezzo {
 
     Mappa mappa;
 
-    public Pezzo(Mappa mappa){
+    public Pezzo(Mappa mappa) {
 
         this.forma = new short[4][4];
 
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 4; j++)
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++)
                 this.forma[i][j] = 0;
         }
 
@@ -36,9 +37,7 @@ public abstract class Pezzo {
         }
     }
 
-    /*Chiamata dopo aver valutato lo spostamento ma prima di avelro effetuato!*/
-    public void rimuoviPezzo(){
-
+    public void rimuoviPezzo() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (this.forma[i][j] == 1) {
@@ -46,68 +45,104 @@ public abstract class Pezzo {
                 }
             }
         }
-
-
     }
 
-    public boolean muovi(int direzione){
-        //valuta lo spostamento richiesto, se è consentito allora chiama rimuovi pezzo ,
-        //piazza il pezzo nuovo dopo aver aggiroanto la posizione! vabbè hai capito!
+    public boolean valutaSpawn() {
+        short[][] formaRuotata = this.forma;
+        int startingColumn = this.column;
+
+        if (!mappa.valutaCollisione(this, this.forma)) {
+            return true;
+        }
+
+        for (int offset = 1; offset < mappa.cols; offset++) {
+            // Controlla a destra
+            this.column = startingColumn + offset;
+            if (this.column < mappa.cols + mappa.borderOffset && !mappa.valutaCollisione(this, this.forma)) {
+                return true;
+            }
+            for (int i = 0; i < 4 && this.column < mappa.cols + mappa.borderOffset; i++) {
+                formaRuotata = ruotaForma(formaRuotata);
+                if (!mappa.valutaCollisione(this, formaRuotata)) {
+                    this.forma = formaRuotata;
+                    return true;
+                }
+            }
+
+            // Controlla a sinistra
+            this.column = startingColumn - offset;
+            if (this.column >= mappa.borderOffset && !mappa.valutaCollisione(this, this.forma)) {
+                return true;
+            }
+            for (int i = 0; i < 4 && this.column >= mappa.borderOffset; i++) {
+                formaRuotata = ruotaForma(formaRuotata);
+                if (!mappa.valutaCollisione(this, formaRuotata)) {
+                    this.forma = formaRuotata;
+                    return true;
+                }
+            }
+        }
+
+        // Ripristina la posizione di partenza se non si trova spazio
+        this.column = startingColumn;
+        return false;
+    }
+
+    public boolean muovi(int direzione) {
         rimuoviPezzo();
 
-        if(mappa.valutaCollisione(this,direzione)){
+        if (mappa.valutaCollisione(this, direzione)) {
             piazzaPezzo();
             return false;
         }
 
-
-        switch(direzione){
+        switch (direzione) {
             case 1: this.column--;
                 break;
             case 2: this.column++;
                 break;
         }
 
-
         piazzaPezzo();
         return true;
     }
 
-    public boolean scendi(){
-
+    public boolean scendi() {
         rimuoviPezzo();
-        if(mappa.valutaCollisione(this,3)){
+        if (mappa.valutaCollisione(this, 3)) {
             piazzaPezzo();
             return false;
         }
         this.row++;
         piazzaPezzo();
         return true;
-
     }
 
-    public boolean ruota(){
-
-        rimuoviPezzo();
-
+    public short[][] ruotaForma(short[][] forma) {
         short[][] nuovaForma = new short[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                nuovaForma[j][3 - i] = this.forma[i][j];
+                nuovaForma[j][3 - i] = forma[i][j];
             }
         }
-        if(mappa.valutaCollisione(this,nuovaForma))
+        return nuovaForma;
+    }
+
+    public boolean ruota() {
+        rimuoviPezzo();
+
+        short[][] nuovaForma = ruotaForma(this.forma);
+        if (mappa.valutaCollisione(this, nuovaForma)) {
+            piazzaPezzo();
             return false;
+        }
 
         this.forma = nuovaForma;
         piazzaPezzo();
         return true;
-
-
     }
 
-    public void setOffset(){
+    public void setOffset() {
         this.column += mappa.borderOffset;
     }
-
 }

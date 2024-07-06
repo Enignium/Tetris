@@ -21,7 +21,7 @@ public class Game {
         render.renderer.core.InitWindow(map.cols * 80, map.rows * 80, "TETRIS");
         render.renderer.core.SetTargetFPS(60);
 
-        while (!render.renderer.core.WindowShouldClose()) {
+        while (!render.renderer.core.WindowShouldClose() && (!gameManager.gameOver)) {
 
             delta = render.renderer.core.GetFrameTime();
             timeAccumulator+=delta;
@@ -37,6 +37,7 @@ public class Game {
                     update = true;
                 }
                 else{
+                    gameManager.mappa.valutaRiga();
                     pezzo = gameManager.nuovoPezzo();
                 }
             }

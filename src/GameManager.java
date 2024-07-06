@@ -10,6 +10,7 @@ public class GameManager{
     Pezzo pezzo;
     InputManager input;
     Render render;
+    boolean gameOver = false;
 
 
 
@@ -37,6 +38,10 @@ public class GameManager{
             case 6 -> new PezzoT(this.mappa);
             default -> throw new IllegalStateException("Unexpected value: " + tipo);
         };
+        if(!pezzo.valutaSpawn()) {
+            System.out.println("GameOver");
+            gameOver = true;
+        }
         return pezzo;
     }
 
@@ -66,7 +71,9 @@ public class GameManager{
         return  ret;
     }
 
-    public void gameOver(){}
+    public void gameOver(){
+
+    }
 
 
 
