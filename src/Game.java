@@ -7,44 +7,23 @@ public class Game {
 
     public static void main(String[] args) {
 
-        Mappa map = new Mappa(20, 12);
-        Render render = new Render(map);
-        Pezzo pezzo;
-        GameManager gameManager = new GameManager(render,map);
-        boolean update = true;
 
-        float gameSpeed = 4F;
+        Render render = new Render();
+        GameManager gameManager = new GameManager(render);
+
         float delta;
-        float timeAccumulator = 0;
-        pezzo = gameManager.nuovoPezzo();
 
-        render.renderer.core.InitWindow(map.cols * 80, map.rows * 80, "TETRIS");
+        gameManager.nuovoPezzo();
+
+        render.renderer.core.InitWindow(gameManager.mappa.cols * 80, gameManager.mappa.rows * 80, "TETRIS");
         render.renderer.core.SetTargetFPS(60);
+        render.renderMap(gameManager.mappa);
 
-        while (!render.renderer.core.WindowShouldClose() && (!gameManager.gameOver)) {
-
-            delta = render.renderer.core.GetFrameTime();
-            timeAccumulator+=delta;
+        while (!render.renderer.core.WindowShouldClose() && (!gameManager.isGameOver())) {
 
             render.renderer.core.BeginDrawing();
 
-
-            update = gameManager.manageInput(pezzo);
-
-            if(timeAccumulator > 2/gameSpeed) {
-                timeAccumulator = 0;
-                if(pezzo.scendi()){
-                    update = true;
-                }
-                else{
-                    gameManager.mappa.valutaRiga();
-                    pezzo = gameManager.nuovoPezzo();
-                }
-            }
-
-            if(update)
-                render.renderMap();
-            update = false;
+            gameManager.playGameState();
 
             render.renderer.core.EndDrawing();
         }

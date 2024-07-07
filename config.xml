@@ -1,0 +1,6 @@
+<config>
+    <server>
+        <ip>127.0.0.1</ip>
+        <port>12345</port>
+    </server>
+</config>

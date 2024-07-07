@@ -34,9 +34,6 @@ public class Mappa {
     };
 
     public boolean valutaCollisione(Pezzo pezzo, int direzione){
-        //SISTEMA
-        //Se rileva un blocco sotto di lui si ferma;
-        //Se tocca il limite superiore della mappa è gameover;
 
         int ColOffset = 0;
         int RowOffset = 0;
@@ -73,27 +70,28 @@ public class Mappa {
         return false;
     };
 
-    public int valutaRiga(){
+    public int valutaRiga() {
         boolean piena;
         int counter = 0;
 
-        for(int i = this.rows - 1; i >= 0; i--){
-            piena = true;  // Reimposta la variabile piena per ogni riga
-            for(int j = this.borderOffset; j < this.cols + borderOffset; j++){
+        int i = this.rows - 1;
+        while (i >= 0) {
+            piena = true;
+            for (int j = this.borderOffset; j < this.cols + this.borderOffset; j++) {
                 if (this.caselle[i][j] == 0) {
                     piena = false;
                     break;
                 }
             }
-            if(piena){
+            if (piena) {
                 counter++;
                 eliminaRiga(i);
                 scendiBlocchi(i);
+                // Rivaluta la stessa riga i dopo la discesa dei blocchi
+            } else {
+                i--; // Passa alla riga successiva solo se non era piena
             }
         }
-
-        System.out.println("Linee eliminate:");
-        System.out.println(counter);
         return counter;
     }
 
