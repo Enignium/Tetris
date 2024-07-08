@@ -1,6 +1,6 @@
-package mappa;
+package client;
 
-import pezzo.Pezzo;
+import client.pezzo.Pezzo;
 
 public class Mappa {
 
@@ -48,7 +48,7 @@ public class Mappa {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (pezzo.forma[i][j] == 1 && this.caselle[pezzo.row + i + RowOffset][pezzo.column + j + ColOffset] == 1){
+                if (pezzo.forma[i][j] > 0 && this.caselle[pezzo.row + i + RowOffset][pezzo.column + j + ColOffset] > 0){
                     return true;
                 }
             }
@@ -62,7 +62,7 @@ public class Mappa {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (forma[i][j] == 1 && this.caselle[pezzo.row + i][pezzo.column + j] == 1){
+                if (forma[i][j] > 0 && this.caselle[pezzo.row + i][pezzo.column + j] > 0){
                     return true;
                 }
             }

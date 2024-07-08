@@ -1,7 +1,8 @@
+package client;
+
 import com.raylib.java.Raylib;
 import com.raylib.java.core.input.Keyboard;
-
-import java.security.Key;
+import shared.Punteggio;
 
 public class InputManager {
     Raylib rlj;

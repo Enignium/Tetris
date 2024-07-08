@@ -1,6 +1,4 @@
-import mappa.Mappa;
-import pezzo.*;
-
+package client;
 
 
 public class Game {

@@ -1,7 +1,11 @@
-import mappa.Mappa;
-import pezzo.*;
+package client;
+
+import client.pezzo.*;
+import shared.Punteggio;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
-import java.math.*;
 
 public class GameManager{
 
@@ -11,6 +15,8 @@ public class GameManager{
     InputManager input;
     Render render;
     Punteggio score;
+    Client client;
+    ArrayList<Punteggio> classifica;
 
     private boolean gameOver = false;
     private float gameSpeed;
@@ -20,18 +26,17 @@ public class GameManager{
     private boolean placed = false;
     private int gameSpeedUpCounter = 1;
     private int gameState = 1;
+    private boolean mostraClassifica = false;
 
     public GameManager(Render render){
         this.render = render;
         this.input = new InputManager(render.renderer);
         this.score = new Punteggio();
-        this.gameSpeed = 1.1F;
+        this.gameSpeed = 1.5F;
         this.update = true;
         this.timeAccumulator = 0;
         this.mappa = new Mappa(20, 12);
     }
-
-    public void start(){}
 
     public void playGameState(){
         switch (gameState){
@@ -44,7 +49,31 @@ public class GameManager{
             case 2:
                 gameOver();
                 break;
+            case 3:
+                classifica();
+                break;
         }
+    }
+
+    private void classifica() {
+
+
+        if(!mostraClassifica) {
+
+            mostraClassifica = true;
+            client = new Client();
+
+            try {
+                classifica = client.getPunteggio();
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                mostraClassifica = false;
+            }
+        }
+        render.renderClassifica(classifica);
+        manageInput();
+
     }
 
     public void game() {
@@ -82,6 +111,7 @@ public class GameManager{
         if (!pezzo.valutaSpawn()) {
             gameState = 2;
         }
+        System.out.println("Nuovo pezzo");
         this.pezzo = pezzo;
     }
 
@@ -136,10 +166,24 @@ public class GameManager{
             }
             return ret;
         }
+
         if (gameState == 1) {
-            if (input.inputListen() == 3) {
-                this.gameState = 0;
+            int listenInput = input.inputListen();
+            if (listenInput == 3) {
+                gameState = 0;
                 nuovoPezzo();
+            } else if (listenInput == 1) {
+                gameState = 3;
+                mostraClassifica = false;
+            }
+        }
+
+        // stato di classifica
+        if (gameState == 3) {
+            int listenInput = input.inputListen();
+            if (listenInput == 3) {
+                gameState = 1;
+                mostraClassifica = false;
             }
         }
 
@@ -147,10 +191,17 @@ public class GameManager{
     }
 
     public void gameOver() {
+        client = new Client();
         render.renderGameOver(score, mappa);
         input.getPlayerName(score);
         if (input.enterPressed) {
             input.enterPressed = false;
+            try {
+                client.addPunteggio(score);
+            }
+            catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
             resetGame();
         }
     }
@@ -168,7 +219,6 @@ public class GameManager{
             gameSpeed = (float) Math.pow(gameSpeed, 1.08);
             gameSpeedUpCounterReset();
         }
-        System.out.println("Nuova speed : " + gameSpeed);
     }
 
     public boolean isGameOver() {

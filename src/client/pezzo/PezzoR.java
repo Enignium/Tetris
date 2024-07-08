@@ -1,10 +1,12 @@
-package pezzo;
-import mappa.Mappa;
+package client.pezzo;
+import client.Mappa;
 
-public class PezzoLs extends Pezzo{
+public class PezzoR extends Pezzo{
 
-    public PezzoLs(Mappa mappa){
+    public PezzoR(Mappa mappa){
         super(mappa);
+        this.idTipo = 4;
+        this.row = 0;
         this.column = 4;
         setOffset();
         daiForma();
@@ -15,15 +17,15 @@ public class PezzoLs extends Pezzo{
 
         this.forma[0][0] = 0;
         this.forma[0][1] = 0;
-        this.forma[0][2] = 1;
+        this.forma[0][2] = 0;
         this.forma[0][3] = 0;
-        this.forma[1][0] = 0;
-        this.forma[1][1] = 0;
-        this.forma[1][2] = 1;
-        this.forma[1][3] = 0;
+        this.forma[1][0] = idTipo;
+        this.forma[1][1] = idTipo;
+        this.forma[1][2] = idTipo;
+        this.forma[1][3] = idTipo;
         this.forma[2][0] = 0;
-        this.forma[2][1] = 1;
-        this.forma[2][2] = 1;
+        this.forma[2][1] = 0;
+        this.forma[2][2] = 0;
         this.forma[2][3] = 0;
         this.forma[3][0] = 0;
         this.forma[3][1] = 0;

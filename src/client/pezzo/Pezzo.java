@@ -1,11 +1,12 @@
-package pezzo;
+package client.pezzo;
 
-import mappa.Mappa;
+import client.Mappa;
 
 public abstract class Pezzo {
 
     public int row;
     public int column;
+    public short idTipo;
     public short[][] forma; //array di array
 
     Mappa mappa;
@@ -40,7 +41,7 @@ public abstract class Pezzo {
     public void rimuoviPezzo() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (this.forma[i][j] == 1) {
+                if (this.forma[i][j] != 0) {
                     mappa.caselle[row + i][column + j] = 0;
                 }
             }

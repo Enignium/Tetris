@@ -1,3 +1,5 @@
+package shared;
+
 import java.io.Serializable;
 
 public class Punteggio implements Serializable {
@@ -9,8 +11,13 @@ public class Punteggio implements Serializable {
         this.punteggio = 0;
         nome = "";
     }
+    //Overloading
+    public Punteggio(int punteggio, String nome){
+        this.punteggio = punteggio;
+        this.nome = nome;
+    }
 
-    int getPunteggio(){
+    public int getPunteggio(){
         return this.punteggio;
     }
 
