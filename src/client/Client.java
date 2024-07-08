@@ -12,10 +12,10 @@ public class Client {
     private final String ip;
     private final int port;
     ArrayList<Punteggio> classifica;
-    BufferedReader responseReader;
-    PrintWriter requestWriter;
-    ObjectInputStream dataReader;
-    ObjectOutputStream dataWriter;
+    private BufferedReader responseReader;
+    private PrintWriter requestWriter;
+    private ObjectInputStream dataReader;
+    private ObjectOutputStream dataWriter;
     Socket socket;
     Config config = new Config();
 

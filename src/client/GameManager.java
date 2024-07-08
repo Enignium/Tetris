@@ -194,8 +194,8 @@ public class GameManager{
         client = new Client();
         render.renderGameOver(score, mappa);
         input.getPlayerName(score);
-        if (input.enterPressed) {
-            input.enterPressed = false;
+        if (input.isEnterPressed()) {
+            input.setEnterPressed(false);
             try {
                 client.addPunteggio(score);
             }

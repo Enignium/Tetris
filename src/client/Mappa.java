@@ -6,8 +6,8 @@ public class Mappa {
 
     final public int rows;
     final public int cols;
-    final public int xDimBorder;
-    final public int yDimBorder;
+    final private int xDimBorder;
+    final private int yDimBorder;
     final public int borderOffset = 3;
 
     public short[][] caselle;

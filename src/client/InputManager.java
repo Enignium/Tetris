@@ -6,7 +6,7 @@ import shared.Punteggio;
 
 public class InputManager {
     Raylib rlj;
-    boolean enterPressed = false;
+    private boolean enterPressed = false;
 
     public InputManager(Raylib rlj){
         this.rlj = rlj;
@@ -42,5 +42,12 @@ public class InputManager {
     }
 
 
+    public boolean isEnterPressed() {
+        return enterPressed;
+    }
+
+    public void setEnterPressed(boolean enterPressed) {
+        this.enterPressed = enterPressed;
+    }
 }
 
