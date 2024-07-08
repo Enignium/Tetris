@@ -11,10 +11,6 @@ public class Game {
         Render render = new Render();
         GameManager gameManager = new GameManager(render);
 
-        float delta;
-
-        gameManager.nuovoPezzo();
-
         render.renderer.core.InitWindow(gameManager.mappa.cols * 80, gameManager.mappa.rows * 80, "TETRIS");
         render.renderer.core.SetTargetFPS(60);
         render.renderMap(gameManager.mappa);
